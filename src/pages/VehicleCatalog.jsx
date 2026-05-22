@@ -1,33 +1,34 @@
 import { useFetch } from '../hooks/useFetch';
+import VehicleCard from '../components/VehicleCard';
 import Loader from '../components/Loader';
 import ErrorMessage from '../components/ErrorMessage';
 
 export default function VehicleCatalog() {
-    // Usamos el Custom Hook apuntando a la URL local de tu API Gateway
-    // Ajusta el puerto 8080 y la ruta '/api/vehiculos' según la configuración exacta de tu backend
-    const { data: vehiculos, loading, error } = useFetch('http://localhost:8080/api/vehiculos');
+    // Pasamos únicamente el endpoint relativo. El hook y Axios se encargan del resto.
+    const { data: vehiculos, loading, error } = useFetch('/vehiculos');
 
-    // 1. Pantalla de carga
     if (loading) return <Loader />;
-
-    // 2. Pantalla de error
     if (error) return <ErrorMessage message={error} />;
 
-    // 3. Pantalla de éxito (Renderizamos la lista)
     return (
-        <div className="page">
-            <h1>Catálogo de Vehículos</h1>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+            <h1 style={{ marginBottom: '24px', color: '#333' }}>Vehículos Disponibles</h1>
 
-                {/* Mapeamos el arreglo de vehículos que nos devolvió el backend */}
+            {/* Si no hay vehículos en la lista */}
+            {vehiculos && vehiculos.length === 0 && (
+                <p>No se encontraron vehículos registrados en el sistema.</p>
+            )}
+
+            {/* Grid dinámico responsivo */}
+            <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                gap: '24px'
+            }}>
                 {vehiculos && vehiculos.map((vehiculo) => (
-                    <div key={vehiculo.id} style={{ border: '1px solid #ccc', padding: '15px', borderRadius: '8px' }}>
-                        <h3>{vehiculo.marca} {vehiculo.modelo}</h3>
-                        <p>Estado: {vehiculo.estado}</p>
-                        {/* Aquí luego insertaremos el componente <VehicleCard /> */}
-                    </div>
+                    // Inyectamos el componente reutilizable pasando el objeto por props
+                    <VehicleCard key={vehiculo.id} vehiculo={vehiculo} />
                 ))}
-
             </div>
         </div>
     );
