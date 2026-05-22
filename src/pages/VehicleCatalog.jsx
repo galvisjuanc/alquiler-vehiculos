@@ -1,0 +1,1 @@
+export default function VehicleCatalog() { return <div className="page"><h1>Catálogo de Vehículos</h1></div>; }

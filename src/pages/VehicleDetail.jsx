@@ -1,0 +1,1 @@
+export default function VehicleDetail() { return <div className="page"><h1>Detalle del Vehículo</h1></div>; }
