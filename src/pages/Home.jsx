@@ -1,0 +1,1 @@
+export default function Home() { return <div className="page"><h1>Bienvenido al Sistema de Alquiler</h1></div>; }

@@ -1,0 +1,1 @@
+export default function AdminDashboard() { return <div className="page"><h1>Panel de Administración</h1></div>; }
