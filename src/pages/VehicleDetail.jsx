@@ -1,7 +1,9 @@
+import { useState } from 'react'; // Añadir useState
 import { useParams, useNavigate } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import Loader from '../components/Loader';
 import ErrorMessage from '../components/ErrorMessage';
+import RentalModal from '../components/RentalModal';
 
 export default function VehicleDetail() {
     // 1. Extraemos el ID de la URL (ej: /vehiculos/5 -> id = 5)
@@ -10,11 +12,19 @@ export default function VehicleDetail() {
     // 2. Hook de navegación para programar botones de "Atrás"
     const navigate = useNavigate();
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     // 3. Hacemos la petición al Back-End para traer solo este vehículo
     const { data: vehiculo, loading, error } = useFetch(`/vehiculos/${id}`);
 
     if (loading) return <Loader />;
     if (error) return <ErrorMessage message={error} />;
+
+    // Función para refrescar los datos tras alquilar (simulación)
+    const handleRentalSuccess = () => {
+        // Podríamos volver a ejecutar el fetch o simplemente navegar
+        navigate('/vehiculos');
+    };
 
     // Si la petición termina pero no hay datos, mostramos un aviso
     if (!vehiculo) return <div style={{ textAlign: 'center', marginTop: '50px' }}>Vehículo no encontrado.</div>;
@@ -63,17 +73,21 @@ export default function VehicleDetail() {
                         <h2 style={styles.priceTag}>Total estimado: ${vehiculo.precioPorDia} / día</h2>
 
                         {/* Botón de Alquiler: Solo se habilita si está disponible */}
+
                         <button
-                            style={{
-                                ...styles.rentButton,
-                                opacity: isDisponible ? 1 : 0.5,
-                                cursor: isDisponible ? 'pointer' : 'not-allowed'
-                            }}
-                            disabled={!isDisponible}
-                            onClick={() => alert('Próximamente: Abrir modal de alquiler')}
+                            style={{...styles.rentButton, opacity: vehiculo.estado === 'DISPONIBLE' ? 1 : 0.5}}
+                            disabled={vehiculo.estado !== 'DISPONIBLE'}
+                            onClick={() => setIsModalOpen(true)}
                         >
-                            {isDisponible ? 'Solicitar Alquiler' : 'Vehículo no disponible'}
+                            {vehiculo.estado === 'DISPONIBLE' ? 'Solicitar Alquiler' : 'No Disponible'}
                         </button>
+
+                        <RentalModal
+                            vehiculo={vehiculo}
+                            isOpen={isModalOpen}
+                            onClose={() => setIsModalOpen(false)}
+                            onRentalSuccess={handleRentalSuccess}
+                        />
                     </div>
                 </div>
             </div>
