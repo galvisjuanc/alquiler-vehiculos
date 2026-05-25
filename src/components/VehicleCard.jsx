@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 export default function VehicleCard({ vehiculo }) {
     // Desestructuramos las propiedades del objeto que viene del backend
     // Ajusta estos nombres si en tu base de datos/entidad de Java se llaman diferente (ej. placa, precioDia)
-    const { id, marca, modelo, anio, estado, precioPorDia } = vehiculo;
+    const { id, marca, modelo, placa, estado } = vehiculo;
 
     // Lógica dinámica para el color del estado del vehículo
     const obtenerEstiloEstado = (status) => {
@@ -35,11 +35,12 @@ export default function VehicleCard({ vehiculo }) {
 
             <div style={styles.content}>
                 <div style={{ display: 'flex', justifyContent: 'between', alignItems: 'center', marginBottom: '10px' }}>
-                    <h3 style={styles.title}>{marca} <span style={styles.model}>{modelo}</span></h3>
+                    <h3 style={styles.title}>Carro # {id}</h3>
                 </div>
 
-                <p style={styles.text}><strong>Año:</strong> {anio}</p>
-                <p style={styles.text}><strong>Precio:</strong> ${precioPorDia} / día</p>
+                <p style={styles.text}><strong>Marca:</strong> {marca}</p>
+                <p style={styles.text}><strong>Modelo:</strong> {modelo}</p>
+                <p style={styles.text}><strong>Placa:</strong> {placa}</p>
 
                 <div style={{ margin: '12px 0' }}>
                     <span style={obtenerEstiloEstado(estado)}>{estado}</span>
