@@ -8,14 +8,12 @@ export default function AdminDashboard() {
     const [loading, setLoading] = useState(true);
     const [setError] = useState(null);
 
-    // Estado para el formulario de nuevo vehículo
     const [nuevoVehiculo, setNuevoVehiculo] = useState({
         marca: '', modelo: '', placa: '', estado: ''
     });
 
     const navigate = useNavigate();
 
-// 1. La función de fetch AHORA SOLO hace el fetch. Ya no recibe parámetros ni activa el loading inicial.
     const fetchVehiculos = useCallback(async () => {
         try {
             const res = await API.get('/vehiculos');
@@ -28,12 +26,10 @@ export default function AdminDashboard() {
         }
     }, []);
 
-// 2. El useEffect queda súper limpio, sin quejas del linter.
     useEffect(() => {
         fetchVehiculos();
     }, [fetchVehiculos]);
 
-// 3. Manejar registro (POST)
     const handleCreate = async (e) => {
         e.preventDefault();
         try {
@@ -41,7 +37,6 @@ export default function AdminDashboard() {
             alert("Vehículo registrado exitosamente.");
             setNuevoVehiculo({ marca: '', modelo: '', placa: '', estado: '' });
 
-            // ¡AQUÍ ES DONDE ACTIVAMOS EL LOADING MANUALMENTE!
             setLoading(true);
             fetchVehiculos(); // Recargar lista
         } catch (err) {
@@ -49,40 +44,29 @@ export default function AdminDashboard() {
         }
     };
 
-// 4. Manejar actualización de estado (PUT)
     const handleUpdateStatus = async (id, nuevoEstado) => {
         try {
-            // Activamos el estado de carga antes de la operación
             setLoading(true);
 
             if (nuevoEstado === 'NO_DISPONIBLE') {
-                // 1. Si se selecciona NO_DISPONIBLE, disparamos el flujo de alquiler
 
                 await API.post(`/operaciones/alquilar/${id}`);
                 alert("Vehículo alquilado exitosamente (Estado: NO_DISPONIBLE).");
 
             } else if (nuevoEstado === 'DISPONIBLE') {
-                // 2. Si estaba rentado y lo pasas a DISPONIBLE, llamamos a tu nuevo endpoint de cancelación
                 await API.post(`/operaciones/cancelaralquiler/${id}`);
                 alert("Alquiler cancelado. El vehículo vuelve a estar DISPONIBLE.");
 
             }
 
-            // REFRESCAR LA VISTA: Volvemos a traer la lista actualizada de la base de datos
             await fetchVehiculos();
 
         } catch (err) {
             console.error(err);
             alert("Error al procesar el cambio de estado: " + (err.response?.data?.message || err.message));
 
-            // Si hay un error, apagamos el loader manualmente para que la interfaz no se quede congelada
             setLoading(false);
         }
-    };
-
-    const handleStatusSuccess = () => {
-        // Podríamos volver a ejecutar el fetch o simplemente navegar
-        navigate('/admin');
     };
 
     if (loading) return <Loader />;

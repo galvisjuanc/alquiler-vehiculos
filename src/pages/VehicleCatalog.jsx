@@ -4,7 +4,7 @@ import Loader from '../components/Loader';
 import ErrorMessage from '../components/ErrorMessage';
 
 export default function VehicleCatalog() {
-    // Pasamos únicamente el endpoint relativo. El hook y Axios se encargan del resto.
+
     const { data: vehiculos, loading, error } = useFetch('/vehiculos');
 
     if (loading) return <Loader />;
@@ -14,12 +14,10 @@ export default function VehicleCatalog() {
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
             <h1 style={{ marginBottom: '24px', color: '#ffffff' }}>Vehículos Disponibles</h1>
 
-            {/* Si no hay vehículos en la lista */}
             {vehiculos && vehiculos.length === 0 && (
                 <p>No se encontraron vehículos registrados en el sistema.</p>
             )}
 
-            {/* Grid dinámico responsivo */}
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
