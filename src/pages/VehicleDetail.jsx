@@ -133,7 +133,8 @@ const styles = {
     title: {
         margin: '0 0 10px 0',
         fontSize: '2rem',
-        color: '#222'
+        color: '#222',
+        justifyContent: 'center',
     },
     badge: {
         display: 'inline-block',
@@ -158,7 +159,7 @@ const styles = {
     },
     label: {
         fontSize: '0.85rem',
-        color: '#6c757d',
+        color: '#102288',
         marginBottom: '4px',
         textTransform: 'uppercase',
         letterSpacing: '0.5px'
