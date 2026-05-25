@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import API from '../services/api'; // Importamos tu configuración centralizada
+import API from '../services/api';
 
 export const useFetch = (endpoint) => {
     const [data, setData] = useState(null);
@@ -12,7 +12,6 @@ export const useFetch = (endpoint) => {
                 setLoading(true);
                 setError(null);
 
-                // Usamos la instancia 'API' con el endpoint relativo
                 const response = await API.get(endpoint);
                 setData(response.data);
             } catch (err) {
