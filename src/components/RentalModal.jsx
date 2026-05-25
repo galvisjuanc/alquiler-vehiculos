@@ -48,7 +48,7 @@ export default function RentalModal({ vehiculo, isOpen, onClose, onRentalSuccess
 
 const styles = {
     overlay: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 },
-    modal: { background: 'white', padding: '30px', borderRadius: '12px', width: '400px', boxShadow: '0 5px 15px rgba(0,0,0,0.3)' },
+    modal: { background: 'gray', padding: '30px', borderRadius: '12px', width: '400px', boxShadow: '0 5px 15px rgba(0,0,0,0.3)' },
     form: { display: 'flex', flexDirection: 'column', gap: '15px' },
     buttons: { display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '10px' },
     cancelBtn: { padding: '10px', background: '#2b2d30', border: 'none', borderRadius: '5px', cursor: 'pointer' },
