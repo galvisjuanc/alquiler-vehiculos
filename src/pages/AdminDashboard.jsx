@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import API from '../services/api';
 import Loader from '../components/Loader';
 
@@ -11,6 +12,8 @@ export default function AdminDashboard() {
     const [nuevoVehiculo, setNuevoVehiculo] = useState({
         marca: '', modelo: '', placa: '', estado: ''
     });
+
+    const navigate = useNavigate();
 
 // 1. La función de fetch AHORA SOLO hace el fetch. Ya no recibe parámetros ni activa el loading inicial.
     const fetchVehiculos = useCallback(async () => {
@@ -49,15 +52,37 @@ export default function AdminDashboard() {
 // 4. Manejar actualización de estado (PUT)
     const handleUpdateStatus = async (id, nuevoEstado) => {
         try {
-            await API.put(`/vehiculos/${id}/estado`, { estado: nuevoEstado });
-            alert("Estado actualizado.");
-
-            // ¡AQUÍ TAMBIÉN ACTIVAMOS EL LOADING MANUALMENTE!
+            // Activamos el estado de carga antes de la operación
             setLoading(true);
-            fetchVehiculos();
+
+            if (nuevoEstado === 'NO_DISPONIBLE') {
+                // 1. Si se selecciona NO_DISPONIBLE, disparamos el flujo de alquiler
+
+                await API.post(`/operaciones/alquilar/${id}`);
+                alert("Vehículo alquilado exitosamente (Estado: NO_DISPONIBLE).");
+
+            } else if (nuevoEstado === 'DISPONIBLE') {
+                // 2. Si estaba rentado y lo pasas a DISPONIBLE, llamamos a tu nuevo endpoint de cancelación
+                await API.post(`/operaciones/cancelaralquiler/${id}`);
+                alert("Alquiler cancelado. El vehículo vuelve a estar DISPONIBLE.");
+
+            }
+
+            // REFRESCAR LA VISTA: Volvemos a traer la lista actualizada de la base de datos
+            await fetchVehiculos();
+
         } catch (err) {
-            alert("Error al actualizar estado. Error: " + err.message);
+            console.error(err);
+            alert("Error al procesar el cambio de estado: " + (err.response?.data?.message || err.message));
+
+            // Si hay un error, apagamos el loader manualmente para que la interfaz no se quede congelada
+            setLoading(false);
         }
+    };
+
+    const handleStatusSuccess = () => {
+        // Podríamos volver a ejecutar el fetch o simplemente navegar
+        navigate('/admin');
     };
 
     if (loading) return <Loader />;
@@ -90,6 +115,7 @@ export default function AdminDashboard() {
                     <tr>
                         <th>ID</th>
                         <th>Vehículo</th>
+                        <th>Placa</th>
                         <th>Estado Actual</th>
                         <th>Acciones</th>
                     </tr>
@@ -99,6 +125,7 @@ export default function AdminDashboard() {
                         <tr key={v.id}>
                             <td>{v.id}</td>
                             <td>{v.marca} {v.modelo}</td>
+                            <td>{v.placa}</td>
                             <td><strong>{v.estado}</strong></td>
                             <td>
                                 <select
