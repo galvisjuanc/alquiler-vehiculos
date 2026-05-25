@@ -1,11 +1,9 @@
 import { Link } from 'react-router-dom';
 
 export default function VehicleCard({ vehiculo }) {
-    // Desestructuramos las propiedades del objeto que viene del backend
-    // Ajusta estos nombres si en tu base de datos/entidad de Java se llaman diferente (ej. placa, precioDia)
+
     const { id, marca, modelo, placa, estado } = vehiculo;
 
-    // Lógica dinámica para el color del estado del vehículo
     const obtenerEstiloEstado = (status) => {
         const baseStyle = {
             padding: '4px 8px',
@@ -18,10 +16,8 @@ export default function VehicleCard({ vehiculo }) {
         switch (status?.toLowerCase()) {
             case 'disponible':
                 return { ...baseStyle, background: '#e6f4ea', color: '#137333' };
-            case 'alquilado':
+            case 'no_disponible':
                 return { ...baseStyle, background: '#fce8e6', color: '#c5221f' };
-            case 'mantenimiento':
-                return { ...baseStyle, background: '#ffe8d6', color: '#b05b00' };
             default:
                 return { ...baseStyle, background: '#f1f3f4', color: '#3c4043' };
         }
@@ -30,7 +26,7 @@ export default function VehicleCard({ vehiculo }) {
     return (
         <div style={styles.card}>
             <div style={styles.imagePlaceholder}>
-                🚗 {/* Puedes reemplazar esto por una imagen real más adelante */}
+                🚗
             </div>
 
             <div style={styles.content}>
@@ -46,7 +42,6 @@ export default function VehicleCard({ vehiculo }) {
                     <span style={obtenerEstiloEstado(estado)}>{estado}</span>
                 </div>
 
-                {/* Enlace dinámico de React Router hacia la vista de detalles */}
                 <Link to={`/vehiculos/${id}`} style={styles.button}>
                     Ver Detalles
                 </Link>
@@ -55,7 +50,6 @@ export default function VehicleCard({ vehiculo }) {
     );
 }
 
-// Estilos modernos en línea para mantener el componente auto-contenido
 const styles = {
     card: {
         background: '#fff',
