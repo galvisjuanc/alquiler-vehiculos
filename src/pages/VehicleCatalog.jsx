@@ -12,7 +12,7 @@ export default function VehicleCatalog() {
 
     return (
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-            <h1 style={{ marginBottom: '24px', color: '#333' }}>Vehículos Disponibles</h1>
+            <h1 style={{ marginBottom: '24px', color: '#ffffff' }}>Vehículos Disponibles</h1>
 
             {/* Si no hay vehículos en la lista */}
             {vehiculos && vehiculos.length === 0 && (
