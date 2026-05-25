@@ -11,7 +11,6 @@ export default function RentalModal({ vehiculo, isOpen, onClose, onRentalSuccess
         setIsSubmitting(true);
 
         try {
-            // Estructura que espera tu microservicio de Operaciones
             const payload = {
                 vehiculoId: vehiculo.id
             };

@@ -10,21 +10,17 @@ function App() {
   return (
       <Router>
         <div className="app-container">
-          {/* Componente fijo en la parte superior */}
           <Navbar />
 
-          {/* Zona de intercambio dinámico de vistas según la URL */}
           <main style={{ padding: '20px', minHeight: '70vh' }}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/vehiculos" element={<VehicleCatalog />} />
-              {/* Ruta dinámica que recibe el parámetro ID del vehículo */}
               <Route path="/vehiculos/:id" element={<VehicleDetail />} />
               <Route path="/admin" element={<AdminDashboard />} />
             </Routes>
           </main>
 
-          {/* Componente fijo en la parte inferior */}
           <Footer />
         </div>
       </Router>
