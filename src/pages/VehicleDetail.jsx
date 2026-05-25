@@ -6,46 +6,37 @@ import ErrorMessage from '../components/ErrorMessage';
 import RentalModal from '../components/RentalModal';
 
 export default function VehicleDetail() {
-    // 1. Extraemos el ID de la URL (ej: /vehiculos/5 -> id = 5)
+
     const { id } = useParams();
 
-    // 2. Hook de navegación para programar botones de "Atrás"
     const navigate = useNavigate();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // 3. Hacemos la petición al Back-End para traer solo este vehículo
     const { data: vehiculo, loading, error } = useFetch(`/vehiculos/${id}`);
 
     if (loading) return <Loader />;
     if (error) return <ErrorMessage message={error} />;
 
-    // Función para refrescar los datos tras alquilar (simulación)
     const handleRentalSuccess = () => {
-        // Podríamos volver a ejecutar el fetch o simplemente navegar
         navigate('/vehiculos');
     };
 
-    // Si la petición termina pero no hay datos, mostramos un aviso
     if (!vehiculo) return <div style={{ textAlign: 'center', marginTop: '50px' }}>Vehículo no encontrado.</div>;
 
-    // Lógica visual para el estado (similar a la tarjeta)
     const isDisponible = vehiculo.estado?.toLowerCase() === 'disponible';
 
     return (
         <div style={styles.container}>
-            {/* Botón para regresar al catálogo */}
             <button onClick={() => navigate('/vehiculos')} style={styles.backButton}>
                 ← Volver al Catálogo
             </button>
 
             <div style={styles.cardLayout}>
-                {/* Columna Izquierda: Imagen o Placeholder */}
                 <div style={styles.imageSection}>
                     <span style={{ fontSize: '6rem' }}>🚙</span>
                 </div>
 
-                {/* Columna Derecha: Información y Acciones */}
                 <div style={styles.infoSection}>
                     <h1 style={styles.title}>Id del Carro: {vehiculo.id}</h1>
                     <p style={styles.badge}>{vehiculo.estado}</p>
@@ -66,7 +57,6 @@ export default function VehicleDetail() {
                     </div>
 
                     <div style={styles.actionSection}>
-                        {/* Botón de Alquiler: Solo se habilita si está disponible */}
 
                         <button
                             style={{...styles.rentButton, opacity: vehiculo.estado === 'DISPONIBLE' ? 1 : 0.5}}
@@ -89,7 +79,6 @@ export default function VehicleDetail() {
     );
 }
 
-// Estilos de la vista de detalle
 const styles = {
     container: {
         maxWidth: '1000px',
