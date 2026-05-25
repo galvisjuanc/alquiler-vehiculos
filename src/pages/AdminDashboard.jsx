@@ -9,7 +9,7 @@ export default function AdminDashboard() {
 
     // Estado para el formulario de nuevo vehículo
     const [nuevoVehiculo, setNuevoVehiculo] = useState({
-        marca: '', modelo: '', anio: '', precioPorDia: '', kilometraje: '', estado: 'DISPONIBLE'
+        marca: '', modelo: '', placa: '', estado: ''
     });
 
 // 1. La función de fetch AHORA SOLO hace el fetch. Ya no recibe parámetros ni activa el loading inicial.
@@ -36,7 +36,7 @@ export default function AdminDashboard() {
         try {
             await API.post('/vehiculos', nuevoVehiculo);
             alert("Vehículo registrado exitosamente.");
-            setNuevoVehiculo({ marca: '', modelo: '', anio: '', precioPorDia: '', kilometraje: '', estado: 'DISPONIBLE' });
+            setNuevoVehiculo({ marca: '', modelo: '', placa: '', estado: '' });
 
             // ¡AQUÍ ES DONDE ACTIVAMOS EL LOADING MANUALMENTE!
             setLoading(true);
@@ -74,10 +74,10 @@ export default function AdminDashboard() {
                            onChange={e => setNuevoVehiculo({...nuevoVehiculo, marca: e.target.value})} />
                     <input type="text" placeholder="Modelo" required value={nuevoVehiculo.modelo}
                            onChange={e => setNuevoVehiculo({...nuevoVehiculo, modelo: e.target.value})} />
-                    <input type="number" placeholder="Año" required value={nuevoVehiculo.anio}
-                           onChange={e => setNuevoVehiculo({...nuevoVehiculo, anio: e.target.value})} />
-                    <input type="number" placeholder="Precio/Día" required value={nuevoVehiculo.precioPorDia}
-                           onChange={e => setNuevoVehiculo({...nuevoVehiculo, precioPorDia: e.target.value})} />
+                    <input type="text" placeholder="Placa" required value={nuevoVehiculo.placa}
+                           onChange={e => setNuevoVehiculo({...nuevoVehiculo, placa: e.target.value})} />
+                    <input type="text" placeholder="Estado" required value={nuevoVehiculo.estado}
+                           onChange={e => setNuevoVehiculo({...nuevoVehiculo, estado: e.target.value})} />
                     <button type="submit" style={styles.btnSubmit}>Guardar Vehículo</button>
                 </form>
             </section>
@@ -107,8 +107,7 @@ export default function AdminDashboard() {
                                     style={styles.select}
                                 >
                                     <option value="DISPONIBLE">Disponible</option>
-                                    <option value="MANTENIMIENTO">Mantenimiento</option>
-                                    <option value="FUERA_DE_SERVICIO">Fuera de Servicio</option>
+                                    <option value="NO_DISPONIBLE">No Disponible</option>
                                 </select>
                             </td>
                         </tr>

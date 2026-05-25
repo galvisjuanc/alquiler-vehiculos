@@ -2,11 +2,6 @@ import { useState } from 'react';
 import API from '../services/api';
 
 export default function RentalModal({ vehiculo, isOpen, onClose, onRentalSuccess }) {
-    const [formData, setFormData] = useState({
-        usuarioNombre: '',
-        fechaInicio: '',
-        fechaFin: ''
-    });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     if (!isOpen) return null;
@@ -18,13 +13,10 @@ export default function RentalModal({ vehiculo, isOpen, onClose, onRentalSuccess
         try {
             // Estructura que espera tu microservicio de Operaciones
             const payload = {
-                vehiculoId: vehiculo.id,
-                usuarioNombre: formData.usuarioNombre,
-                fechaInicio: formData.fechaInicio,
-                fechaFin: formData.fechaFin
+                vehiculoId: vehiculo.id
             };
 
-            await API.post('/operaciones', payload);
+            await API.post(`/operaciones/alquilar/${vehiculo.id}`, payload);
 
             alert('¡Alquiler registrado con éxito!');
             onRentalSuccess(); // Para actualizar el estado en la vista de detalle
@@ -42,30 +34,6 @@ export default function RentalModal({ vehiculo, isOpen, onClose, onRentalSuccess
             <div style={styles.modal}>
                 <h2>Alquilar {vehiculo.marca} {vehiculo.modelo}</h2>
                 <form onSubmit={handleSubmit} style={styles.form}>
-                    <label>Nombre del Cliente:</label>
-                    <input
-                        type="text"
-                        required
-                        value={formData.usuarioNombre}
-                        onChange={(e) => setFormData({...formData, usuarioNombre: e.target.value})}
-                    />
-
-                    <label>Fecha de Inicio:</label>
-                    <input
-                        type="date"
-                        required
-                        value={formData.fechaInicio}
-                        onChange={(e) => setFormData({...formData, fechaInicio: e.target.value})}
-                    />
-
-                    <label>Fecha de Fin:</label>
-                    <input
-                        type="date"
-                        required
-                        value={formData.fechaFin}
-                        onChange={(e) => setFormData({...formData, fechaFin: e.target.value})}
-                    />
-
                     <div style={styles.buttons}>
                         <button type="button" onClick={onClose} style={styles.cancelBtn}>Cancelar</button>
                         <button type="submit" disabled={isSubmitting} style={styles.submitBtn}>
@@ -83,6 +51,6 @@ const styles = {
     modal: { background: 'white', padding: '30px', borderRadius: '12px', width: '400px', boxShadow: '0 5px 15px rgba(0,0,0,0.3)' },
     form: { display: 'flex', flexDirection: 'column', gap: '15px' },
     buttons: { display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '10px' },
-    cancelBtn: { padding: '10px', background: '#ccc', border: 'none', borderRadius: '5px', cursor: 'pointer' },
+    cancelBtn: { padding: '10px', background: '#2b2d30', border: 'none', borderRadius: '5px', cursor: 'pointer' },
     submitBtn: { padding: '10px', background: '#28a745', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }
 };
