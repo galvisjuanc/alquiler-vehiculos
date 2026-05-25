@@ -47,31 +47,25 @@ export default function VehicleDetail() {
 
                 {/* Columna Derecha: Información y Acciones */}
                 <div style={styles.infoSection}>
-                    <h1 style={styles.title}>{vehiculo.marca} {vehiculo.modelo}</h1>
+                    <h1 style={styles.title}>Id del Carro: {vehiculo.id}</h1>
                     <p style={styles.badge}>{vehiculo.estado}</p>
 
                     <div style={styles.detailsGrid}>
                         <div style={styles.detailItem}>
-                            <span style={styles.label}>Año de Fabricación</span>
-                            <span style={styles.value}>{vehiculo.anio}</span>
+                            <span style={styles.label}>Marca</span>
+                            <span style={styles.value}>{vehiculo.marca}</span>
                         </div>
                         <div style={styles.detailItem}>
-                            <span style={styles.label}>Precio Diario</span>
-                            <span style={styles.value}>${vehiculo.precioPorDia}</span>
+                            <span style={styles.label}>Modelo</span>
+                            <span style={styles.value}>{vehiculo.modelo}</span>
                         </div>
                         <div style={styles.detailItem}>
-                            <span style={styles.label}>Kilometraje</span>
-                            <span style={styles.value}>{vehiculo.kilometraje || 'N/A'} km</span>
-                        </div>
-                        <div style={styles.detailItem}>
-                            <span style={styles.label}>Identificador (ID)</span>
-                            <span style={styles.value}>#{vehiculo.id}</span>
+                            <span style={styles.label}>Placa</span>
+                            <span style={styles.value}>{vehiculo.placa}</span>
                         </div>
                     </div>
 
                     <div style={styles.actionSection}>
-                        <h2 style={styles.priceTag}>Total estimado: ${vehiculo.precioPorDia} / día</h2>
-
                         {/* Botón de Alquiler: Solo se habilita si está disponible */}
 
                         <button
